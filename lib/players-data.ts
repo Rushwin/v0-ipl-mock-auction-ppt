@@ -26,7 +26,7 @@ const batsmen: Player[] = [
     bowlingStyle: "Right-arm medium",
     image: "/virat-kohli-cricket-player.jpg",
     specialSkills: ["Chase Master", "Captain", "Aggressive Batting"],
-    isHidden: true, // Made Virat Kohli a hidden player
+    isHidden: true, // Hidden batsman
   },
   {
     id: 2,
@@ -255,7 +255,6 @@ const batsmen: Player[] = [
     bowlingStyle: "Right-arm off-break",
     image: "/placeholder.svg?height=300&width=300",
     specialSkills: ["Opening", "Captain", "Aggressive"],
-    isHidden: true, // Hidden player
   },
 ]
 
@@ -267,11 +266,12 @@ const bowlers: Player[] = [
     role: "Bowler",
     country: "India",
     age: 30,
-    basePrice: 15000000,
+    basePrice: 12000000,
     battingStyle: "Right-handed",
     bowlingStyle: "Right-arm fast",
-    image: "/jasprit-bumrah-cricket-player.jpg",
-    specialSkills: ["Death Bowling", "Yorkers", "Pace"],
+    image: "/placeholder.svg?height=300&width=300",
+    specialSkills: ["Yorkers", "Death Bowling", "Unorthodox Action"],
+    isHidden: true, // Hidden bowler
   },
   {
     id: 22,
@@ -596,7 +596,6 @@ const bowlers: Player[] = [
     bowlingStyle: "Left-arm fast-medium",
     image: "/placeholder.svg?height=300&width=300",
     specialSkills: ["Left-arm Pace", "Cutters", "Death Bowling"],
-    isHidden: true, // Hidden player
   },
 ]
 
@@ -612,7 +611,8 @@ const wicketKeepers: Player[] = [
     battingStyle: "Right-handed",
     bowlingStyle: "Right-arm medium",
     image: "/placeholder.svg?height=300&width=300",
-    specialSkills: ["Captain Cool", "Finisher", "Legend"],
+    specialSkills: ["Finishing", "Captain Cool", "Lightning Stumping"],
+    isHidden: true, // Hidden wicket keeper
   },
   {
     id: 50,
@@ -733,7 +733,6 @@ const wicketKeepers: Player[] = [
     bowlingStyle: "Right-arm medium",
     image: "/placeholder.svg?height=300&width=300",
     specialSkills: ["Opening", "Aggressive", "Wicket-keeping"],
-    isHidden: true, // Hidden player
   },
 ]
 
@@ -748,8 +747,8 @@ const allRounders: Player[] = [
     basePrice: 16000000,
     battingStyle: "Left-handed",
     bowlingStyle: "Right-arm fast-medium",
-    image: "/placeholder-5a06k.png",
-    specialSkills: ["Captain", "Match Winner", "Clutch Player"],
+    image: "/placeholder.svg?height=300&width=300",
+    specialSkills: ["Power Hitting", "Pace Bowling", "Match Winner"],
   },
   {
     id: 61,
@@ -760,11 +759,36 @@ const allRounders: Player[] = [
     basePrice: 15000000,
     battingStyle: "Right-handed",
     bowlingStyle: "Right-arm fast-medium",
-    image: "/hardik-pandya-cricket-player.jpg",
-    specialSkills: ["Big Hitter", "Death Bowling", "Captain"],
+    image: "/placeholder.svg?height=300&width=300",
+    specialSkills: ["Power Hitting", "Death Bowling", "Fielding"],
   },
   {
     id: 62,
+    name: "Andre Russell",
+    role: "All-rounder",
+    country: "West Indies",
+    age: 35,
+    basePrice: 12000000,
+    battingStyle: "Right-handed",
+    bowlingStyle: "Right-arm fast-medium",
+    image: "/placeholder.svg?height=300&width=300",
+    specialSkills: ["Power Hitting", "Death Bowling", "Big Hitter"],
+  },
+  {
+    id: 63,
+    name: "Liam Livingstone",
+    role: "All-rounder",
+    country: "England",
+    age: 30,
+    basePrice: 8000000,
+    battingStyle: "Right-handed",
+    bowlingStyle: "Right-arm leg-break",
+    image: "/placeholder.svg?height=300&width=300",
+    specialSkills: ["Power Hitting", "Spin Bowling", "Big Hitter"],
+    isHidden: true, // Hidden all-rounder
+  },
+  {
+    id: 64,
     name: "Ravindra Jadeja",
     role: "All-rounder",
     country: "India",
@@ -776,7 +800,7 @@ const allRounders: Player[] = [
     specialSkills: ["Spin Bowling", "Fielding", "Lower Order"],
   },
   {
-    id: 63,
+    id: 65,
     name: "Glenn Maxwell",
     role: "All-rounder",
     country: "Australia",
@@ -788,7 +812,7 @@ const allRounders: Player[] = [
     specialSkills: ["Big Hitter", "Spin Bowling", "Versatile"],
   },
   {
-    id: 64,
+    id: 66,
     name: "Shakib Al Hasan",
     role: "All-rounder",
     country: "Bangladesh",
@@ -800,19 +824,7 @@ const allRounders: Player[] = [
     specialSkills: ["Captain", "Spin Bowling", "Experience"],
   },
   {
-    id: 65,
-    name: "Andre Russell",
-    role: "All-rounder",
-    country: "West Indies",
-    age: 35,
-    basePrice: 12000000,
-    battingStyle: "Right-handed",
-    bowlingStyle: "Right-arm fast-medium",
-    image: "/andre-russell-cricket-player.jpg",
-    specialSkills: ["Power Hitting", "Death Bowling", "Match Winner"],
-  },
-  {
-    id: 66,
+    id: 67,
     name: "Marcus Stoinis",
     role: "All-rounder",
     country: "Australia",
@@ -824,7 +836,7 @@ const allRounders: Player[] = [
     specialSkills: ["Power Hitting", "Death Bowling", "Fielding"],
   },
   {
-    id: 67,
+    id: 68,
     name: "Moeen Ali",
     role: "All-rounder",
     country: "England",
@@ -836,7 +848,7 @@ const allRounders: Player[] = [
     specialSkills: ["Spin Bowling", "Lower Order", "Experience"],
   },
   {
-    id: 68,
+    id: 69,
     name: "Kieron Pollard",
     role: "All-rounder",
     country: "West Indies",
@@ -848,7 +860,7 @@ const allRounders: Player[] = [
     specialSkills: ["Power Hitting", "Captain", "Experience"],
   },
   {
-    id: 69,
+    id: 70,
     name: "Dwayne Bravo",
     role: "All-rounder",
     country: "West Indies",
@@ -860,7 +872,7 @@ const allRounders: Player[] = [
     specialSkills: ["Death Bowling", "Lower Order", "Experience"],
   },
   {
-    id: 70,
+    id: 71,
     name: "Washington Sundar",
     role: "All-rounder",
     country: "India",
@@ -870,19 +882,6 @@ const allRounders: Player[] = [
     bowlingStyle: "Right-arm off-break",
     image: "/placeholder.svg?height=300&width=300",
     specialSkills: ["Spin Bowling", "Lower Order", "Young Talent"],
-  },
-  {
-    id: 71,
-    name: "Liam Livingstone",
-    role: "All-rounder",
-    country: "England",
-    age: 30,
-    basePrice: 8000000,
-    battingStyle: "Right-handed",
-    bowlingStyle: "Right-arm leg-break",
-    image: "/placeholder.svg?height=300&width=300",
-    specialSkills: ["Power Hitting", "Spin Bowling", "Big Hitter"],
-    isHidden: true, // Made Liam Livingstone a hidden player
   },
   {
     id: 72,
@@ -1087,7 +1086,6 @@ const allRounders: Player[] = [
     bowlingStyle: "Right-arm fast-medium",
     image: "/placeholder.svg?height=300&width=300",
     specialSkills: ["Captain", "Height", "Experience"],
-    isHidden: true, // Hidden player
   },
 ]
 
@@ -1161,16 +1159,88 @@ function shuffleCardsWithDistribution(allPlayers: Player[]): Player[] {
   return result
 }
 
-// Combine all players (91 total: 88 regular + 3 steal cards)
-const allPlayers: Player[] = [
-  ...batsmen, // 20 players (1 hidden)
-  ...bowlers, // 28 players (1 hidden)
-  ...wicketKeepers, // 11 players (1 hidden)
-  ...allRounders, // 29 players (2 hidden)
-  ...stealCards, // 3 steal cards
-]
+export function getAllPlayersWithStealCards(): Player[] {
+  const allPlayers = [...batsmen, ...bowlers, ...wicketKeepers, ...allRounders]
+  const totalCards = allPlayers.length + stealCards.length // 88 + 3 = 91
+  const result: Player[] = []
 
-export const players: Player[] = shuffleCardsWithDistribution(allPlayers)
+  // Calculate positions for steal cards (evenly distributed)
+  const stealPositions = [
+    Math.floor(totalCards * 0.25), // Around 25%
+    Math.floor(totalCards * 0.5), // Around 50%
+    Math.floor(totalCards * 0.75), // Around 75%
+  ]
+
+  let playerIndex = 0
+  let stealIndex = 0
+
+  for (let i = 0; i < totalCards; i++) {
+    if (stealPositions.includes(i) && stealIndex < stealCards.length) {
+      result.push(stealCards[stealIndex])
+      stealIndex++
+    } else if (playerIndex < allPlayers.length) {
+      result.push(allPlayers[playerIndex])
+      playerIndex++
+    }
+  }
+
+  return result
+}
+
+export const createRoundBasedPlayers = () => {
+  // Get all regular players (excluding steal cards)
+  const regularPlayers = [
+    ...batsmen, // 20 players
+    ...bowlers, // 28 players
+    ...wicketKeepers, // 11 players
+    ...allRounders, // 29 players
+  ] // Total: 88 players
+
+  // Shuffle the regular players to ensure random distribution
+  const shuffledPlayers = [...regularPlayers].sort(() => Math.random() - 0.5)
+
+  // Distribute players across rounds with good mix of roles
+  const round1Players: Player[] = []
+  const round2Players: Player[] = []
+  const round3Players: Player[] = []
+
+  // Separate players by role for balanced distribution
+  const batsmenPool = shuffledPlayers.filter((p) => p.role === "Batsman")
+  const bowlersPool = shuffledPlayers.filter((p) => p.role === "Bowler")
+  const keepersPool = shuffledPlayers.filter((p) => p.role === "Wicket-keeper")
+  const allRoundersPool = shuffledPlayers.filter((p) => p.role === "All-rounder")
+
+  // Distribute batsmen (20 total: 7, 7, 6)
+  round1Players.push(...batsmenPool.slice(0, 7))
+  round2Players.push(...batsmenPool.slice(7, 14))
+  round3Players.push(...batsmenPool.slice(14, 20))
+
+  // Distribute bowlers (28 total: 10, 10, 8)
+  round1Players.push(...bowlersPool.slice(0, 10))
+  round2Players.push(...bowlersPool.slice(10, 20))
+  round3Players.push(...bowlersPool.slice(20, 28))
+
+  // Distribute wicket-keepers (11 total: 4, 4, 3)
+  round1Players.push(...keepersPool.slice(0, 4))
+  round2Players.push(...keepersPool.slice(4, 8))
+  round3Players.push(...keepersPool.slice(8, 11))
+
+  // Distribute all-rounders (29 total: 9, 9, 11)
+  round1Players.push(...allRoundersPool.slice(0, 9))
+  round2Players.push(...allRoundersPool.slice(9, 18))
+  round3Players.push(...allRoundersPool.slice(18, 29))
+
+  // Add 1 steal card to each round
+  const round1WithSteal = shuffleCardsWithDistribution([...round1Players, stealCards[0]])
+  const round2WithSteal = shuffleCardsWithDistribution([...round2Players, stealCards[1]])
+  const round3WithSteal = shuffleCardsWithDistribution([...round3Players, stealCards[2]])
+
+  return {
+    round1: round1WithSteal, // 31 cards (30 players + 1 steal)
+    round2: round2WithSteal, // 31 cards (30 players + 1 steal)
+    round3: round3WithSteal, // 29 cards (28 players + 1 steal)
+  }
+}
 
 // Export categories for easy access
 export const playerCategories = {
