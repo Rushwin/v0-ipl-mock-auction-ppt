@@ -45,6 +45,7 @@ export default function IPLAuction() {
   const [playerPhotos, setPlayerPhotos] = useState<Record<string, string>>({})
   const [editedPlayerData, setEditedPlayerData] = useState<Partial<Player>>({})
   const [revealedHiddenPlayers, setRevealedHiddenPlayers] = useState(new Set<number>())
+  const [playerEdits, setPlayerEdits] = useState<Record<number, Partial<Player>>>({})
 
   const supabase = createClient()
 
@@ -77,7 +78,7 @@ export default function IPLAuction() {
   useEffect(() => {
     const loadPlayerEdits = async () => {
       try {
-        const { data, error } = await supabase.from("player_edits").select("*").limit(1)
+        const { data, error } = await supabase.from("player_edits").select("*")
 
         if (error) {
           if (!error.message.includes("table") && !error.message.includes("schema cache")) {
@@ -85,9 +86,19 @@ export default function IPLAuction() {
           } else {
             console.log("Player edits table not yet created - this is normal on first run")
           }
-        } else if (data) {
+        } else if (data && data.length > 0) {
           console.log("Loaded player edits from cloud:", data)
-          // This would be implemented when we have actual edit data to apply
+          const editsMap: Record<number, Partial<Player>> = {}
+          data.forEach((edit) => {
+            editsMap[edit.player_id] = {
+              name: edit.name,
+              age: edit.age,
+              basePrice: edit.base_price,
+              battingStyle: edit.batting_style,
+              bowlingStyle: edit.bowling_style,
+            }
+          })
+          setPlayerEdits(editsMap)
         }
       } catch (error) {
         console.log("Could not connect to database - running in offline mode")
@@ -96,6 +107,21 @@ export default function IPLAuction() {
 
     loadPlayerEdits()
   }, [supabase])
+
+  const applyPlayerEdits = (player: Player): Player => {
+    const edits = playerEdits[player.id]
+    if (!edits) return player
+
+    return {
+      ...player,
+      ...edits,
+    }
+  }
+
+  const getCurrentPlayerWithEdits = (): Player | null => {
+    if (!currentPlayer) return null
+    return applyPlayerEdits(currentPlayer)
+  }
 
   const selectPlayerByNumber = () => {
     const number = Number.parseInt(selectedNumber)
@@ -115,8 +141,9 @@ export default function IPLAuction() {
 
     setTimeout(() => {
       const selectedPlayer = allPlayers[number - 1] // Use mixed player array
+      const playerWithEdits = applyPlayerEdits(selectedPlayer)
 
-      setCurrentPlayer(selectedPlayer)
+      setCurrentPlayer(playerWithEdits)
       setUsedNumbers((prev) => new Set([...prev, number]))
       setIsRevealing(false)
       setAuctionStarted(true)
@@ -130,7 +157,8 @@ export default function IPLAuction() {
 
   const selectRound = (round: 1 | 2 | 3) => {
     setCurrentRound(round)
-    setAllPlayers(roundPlayers[`round${round}` as keyof typeof roundPlayers])
+    const roundPlayersWithEdits = roundPlayers[`round${round}` as keyof typeof roundPlayers].map(applyPlayerEdits)
+    setAllPlayers(roundPlayersWithEdits)
     setShowRoundSelection(false)
     setAuctionStarted(false)
     setCurrentPlayer(null)
@@ -216,6 +244,14 @@ export default function IPLAuction() {
       }
       setCurrentPlayer(updatedPlayer)
 
+      setPlayerEdits((prev) => ({
+        ...prev,
+        [currentPlayer.id]: {
+          ...prev[currentPlayer.id],
+          ...editedPlayerData,
+        },
+      }))
+
       // Save to cloud
       await savePlayerEditToCloud(currentPlayer.id, editedPlayerData)
     }
@@ -282,6 +318,8 @@ export default function IPLAuction() {
       setRevealedHiddenPlayers((prev) => new Set([...prev, currentPlayer.id]))
     }
   }
+
+  const displayPlayer = getCurrentPlayerWithEdits()
 
   if (showIntro) {
     return (
@@ -757,13 +795,13 @@ export default function IPLAuction() {
               </CardContent>
             </Card>
           </div>
-        ) : currentPlayer ? (
+        ) : displayPlayer ? (
           <div className="flex justify-center">
             <Card
               className={`w-full max-w-4xl glass-effect shadow-2xl transform hover:scale-105 transition-transform duration-300 border ${
-                currentPlayer.isStealCard
+                displayPlayer.isStealCard
                   ? "bg-gradient-to-br from-yellow-900/20 to-orange-900/20 border-yellow-500/50"
-                  : isPlayerHidden(currentPlayer)
+                  : isPlayerHidden(displayPlayer)
                     ? "bg-gradient-to-br from-purple-900/20 to-indigo-900/20 border-purple-500/50"
                     : "border-border"
               }`}
@@ -771,11 +809,11 @@ export default function IPLAuction() {
               <CardContent className="p-6">
                 <div className="text-center mb-4">
                   <div className="flex items-center justify-center gap-3 mb-3">
-                    {getPlayerTypeIcon(currentPlayer)}
+                    {getPlayerTypeIcon(displayPlayer)}
                     <Badge className="bg-primary text-primary-foreground text-lg px-3 py-1">
-                      {currentPlayer.isStealCard ? "STEAL CARD" : `Card #${usedNumbers.size}`}
+                      {displayPlayer.isStealCard ? "STEAL CARD" : `Card #${usedNumbers.size}`}
                     </Badge>
-                    {isPlayerHidden(currentPlayer) && (
+                    {isPlayerHidden(displayPlayer) && (
                       <Badge className="bg-purple-600 text-white text-sm px-2 py-1">MYSTERY PLAYER</Badge>
                     )}
                   </div>
@@ -785,20 +823,20 @@ export default function IPLAuction() {
                   {/* Player Image */}
                   <div className="text-center">
                     <div className="relative">
-                      {isPlayerHidden(currentPlayer) ? (
+                      {isPlayerHidden(displayPlayer) ? (
                         <div className="w-40 h-40 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full mx-auto shadow-lg border-4 border-purple-500 flex items-center justify-center">
                           <EyeOff className="w-12 h-12 text-white/50" />
                         </div>
                       ) : (
                         <img
                           src={getCurrentPlayerImage() || "/placeholder.svg"}
-                          alt={currentPlayer.name}
+                          alt={displayPlayer.name}
                           className={`w-40 h-40 object-cover rounded-full mx-auto shadow-lg border-4 ${
-                            currentPlayer.isStealCard ? "border-yellow-500" : "border-primary"
+                            displayPlayer.isStealCard ? "border-yellow-500" : "border-primary"
                           }`}
                         />
                       )}
-                      {!currentPlayer.isStealCard && !isPlayerHidden(currentPlayer) && (
+                      {!displayPlayer.isStealCard && !isPlayerHidden(displayPlayer) && (
                         <Button
                           onClick={startEditingPhoto}
                           size="sm"
@@ -808,9 +846,9 @@ export default function IPLAuction() {
                         </Button>
                       )}
                       <Badge
-                        className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 ${getRoleColor(currentPlayer.role)} text-sm px-2 py-1`}
+                        className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 ${getRoleColor(displayPlayer.role)} text-sm px-2 py-1`}
                       >
-                        {currentPlayer.role}
+                        {displayPlayer.role}
                       </Badge>
                     </div>
                   </div>
@@ -819,13 +857,13 @@ export default function IPLAuction() {
                   <div className="space-y-3">
                     <div className="relative">
                       <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-                        {isPlayerHidden(currentPlayer) ? "MYSTERY PLAYER" : currentPlayer.name}
+                        {isPlayerHidden(displayPlayer) ? "MYSTERY PLAYER" : displayPlayer.name}
                       </h2>
                       <p className="text-base text-muted-foreground">
-                        {isPlayerHidden(currentPlayer) ? "???" : currentPlayer.country}
-                        {!isPlayerHidden(currentPlayer) && currentPlayer.age > 0 && ` • Age: ${currentPlayer.age}`}
+                        {isPlayerHidden(displayPlayer) ? "???" : displayPlayer.country}
+                        {!isPlayerHidden(displayPlayer) && displayPlayer.age > 0 && ` • Age: ${displayPlayer.age}`}
                       </p>
-                      {!currentPlayer.isStealCard && !isPlayerHidden(currentPlayer) && (
+                      {!displayPlayer.isStealCard && !isPlayerHidden(displayPlayer) && (
                         <Button
                           onClick={startEditingDetails}
                           size="sm"
@@ -834,7 +872,7 @@ export default function IPLAuction() {
                           <Edit className="w-3 h-3" />
                         </Button>
                       )}
-                      {isPlayerHidden(currentPlayer) && (
+                      {isPlayerHidden(displayPlayer) && (
                         <Button
                           onClick={revealHiddenPlayer}
                           className="mt-3 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 text-sm"
@@ -847,49 +885,49 @@ export default function IPLAuction() {
 
                     <div
                       className={`rounded-lg p-3 text-white ${
-                        currentPlayer.isStealCard
+                        displayPlayer.isStealCard
                           ? "bg-gradient-to-r from-yellow-600 to-orange-600"
                           : "bg-gradient-to-r from-green-600 to-emerald-600"
                       }`}
                     >
                       <p className="text-sm font-medium mb-1">
-                        {currentPlayer.isStealCard ? "SPECIAL POWER" : "BASE PRICE"}
+                        {displayPlayer.isStealCard ? "SPECIAL POWER" : "BASE PRICE"}
                       </p>
                       <p className="text-xl md:text-2xl font-bold">
-                        {currentPlayer.isStealCard
+                        {displayPlayer.isStealCard
                           ? "STEAL ANY PLAYER"
-                          : isPlayerHidden(currentPlayer)
+                          : isPlayerHidden(displayPlayer)
                             ? "MYSTERY PRICE"
-                            : formatPrice(currentPlayer.basePrice)}
+                            : formatPrice(displayPlayer.basePrice)}
                       </p>
                     </div>
 
-                    {!currentPlayer.isStealCard && (
+                    {!displayPlayer.isStealCard && (
                       <div className="grid grid-cols-2 gap-2">
                         <div className="bg-blue-900/30 rounded-lg p-2 border border-blue-700/50">
                           <p className="text-xs font-medium text-blue-300 mb-1">BATTING STYLE</p>
                           <p className="text-xs font-semibold text-blue-100">
-                            {isPlayerHidden(currentPlayer) ? "???" : currentPlayer.battingStyle}
+                            {isPlayerHidden(displayPlayer) ? "???" : displayPlayer.battingStyle}
                           </p>
                         </div>
                         <div className="bg-red-900/30 rounded-lg p-2 border border-red-700/50">
                           <p className="text-xs font-medium text-red-300 mb-1">BOWLING STYLE</p>
                           <p className="text-xs font-semibold text-red-100">
-                            {isPlayerHidden(currentPlayer) ? "???" : currentPlayer.bowlingStyle}
+                            {isPlayerHidden(displayPlayer) ? "???" : displayPlayer.bowlingStyle}
                           </p>
                         </div>
                       </div>
                     )}
 
-                    {currentPlayer.specialSkills && (
+                    {displayPlayer.specialSkills && (
                       <div className="bg-purple-900/30 rounded-lg p-2 border border-purple-700/50">
                         <p className="text-xs font-medium text-purple-300 mb-2">
-                          {currentPlayer.isStealCard ? "ABILITIES" : "SPECIAL SKILLS"}
+                          {displayPlayer.isStealCard ? "ABILITIES" : "SPECIAL SKILLS"}
                         </p>
                         <div className="flex flex-wrap gap-1">
-                          {(isPlayerHidden(currentPlayer) && !currentPlayer.isStealCard
+                          {(isPlayerHidden(displayPlayer) && !displayPlayer.isStealCard
                             ? ["???", "???", "???"]
-                            : currentPlayer.specialSkills
+                            : displayPlayer.specialSkills
                           ).map((skill, index) => (
                             <Badge key={index} variant="secondary" className="bg-purple-800/50 text-purple-200 text-xs">
                               {skill}
