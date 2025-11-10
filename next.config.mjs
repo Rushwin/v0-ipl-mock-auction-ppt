@@ -9,6 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  output: 'export',
+  trailingSlash: true,
+  basePath: '/v0-ipl-mock-auction-ppt',
+  assetPrefix: '/v0-ipl-mock-auction-ppt/',
 }
 
 export default nextConfig
