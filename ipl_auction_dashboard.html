@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Auction Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        h1 {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2e86c1;
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+            transition: background 0.3s ease;
+        }
+        
+        .team-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .player-name {
+            color: #34495e;
+        }
+        
+        .bid-amount {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .winning {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+        
+        .outbid {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+        
+        .sold {
+            background: #cce5ff;
+            color: #004085;
+            border: 2px solid #007bff;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .stat-box {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏏 IPL AUCTION DASHBOARD 2025 🏏</h1>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Teams</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Active Bids</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">₹125 Cr</div>
+                <div class="stat-label">Total Bidding</div>
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Player</th>
+                    <th>Bid Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="team-name">Chennai Super Kings</td>
+                    <td class="player-name">Virat Kohli</td>
+                    <td class="bid-amount">₹15 Cr</td>
+                    <td><span class="status winning">Winning</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Mumbai Indians</td>
+                    <td class="player-name">Rohit Sharma</td>
+                    <td class="bid-amount">₹12 Cr</td>
+                    <td><span class="status outbid">Outbid</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Royal Challengers Bangalore</td>
+                    <td class="player-name">MS Dhoni</td>
+                    <td class="bid-amount">₹11 Cr</td>
+                    <td><span class="status winning">Winning</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Kolkata Knight Riders</td>
+                    <td class="player-name">Jasprit Bumrah</td>
+                    <td class="bid-amount">₹14 Cr</td>
+                    <td><span class="status sold">Sold</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Delhi Capitals</td>
+                    <td class="player-name">Hardik Pandya</td>
+                    <td class="bid-amount">₹10 Cr</td>
+                    <td><span class="status winning">Winning</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Sunrisers Hyderabad</td>
+                    <td class="player-name">Rashid Khan</td>
+                    <td class="bid-amount">₹13 Cr</td>
+                    <td><span class="status outbid">Outbid</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Punjab Kings</td>
+                    <td class="player-name">KL Rahul</td>
+                    <td class="bid-amount">₹9 Cr</td>
+                    <td><span class="status winning">Winning</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Rajasthan Royals</td>
+                    <td class="player-name">Jos Buttler</td>
+                    <td class="bid-amount">₹11.5 Cr</td>
+                    <td><span class="status sold">Sold</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Gujarat Titans</td>
+                    <td class="player-name">Shubman Gill</td>
+                    <td class="bid-amount">₹8 Cr</td>
+                    <td><span class="status winning">Winning</span></td>
+                </tr>
+                <tr>
+                    <td class="team-name">Lucknow Super Giants</td>
+                    <td class="player-name">David Warner</td>
+                    <td class="bid-amount">₹10.5 Cr</td>
+                    <td><span class="status outbid">Outbid</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            IPL Auction Dashboard © 2025 | Live Bidding Updates
+        </div>
+    </div>
+</body>
+</html>
